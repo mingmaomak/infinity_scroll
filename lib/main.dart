@@ -147,7 +147,7 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
-                      "Height: " + photo.height + " Mass: " + photo.mass + " Gender: " + photo.gender,
+                      "Height: " + photo.height + "      Mass: " + photo.mass + "      Gender: " + photo.gender + "      Birth year: " + photo.byear ,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
