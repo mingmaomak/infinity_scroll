@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutterinfinitelistview/Photo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -122,22 +122,40 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
                   // "https://cdn.discordapp.com/attachments/513061527092461570/865428649220767784/pnhx3ba61jt41.jpg",
                   photo.url,
                   fit: BoxFit.fitWidth,
-                  width: 300//double.infinity,
+                  width: 200, //double.infinity,
                   // height: 160,
                 ),
                 //   CircleAvatar(
                 //     backgroundImage: NetworkImage(photo.url),
                 //   ),
-                Padding(
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
                     photo.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 24,
+                      ),
                     ),
                   ),
                 ),
+
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      "Height: " + photo.height + " Mass: " + photo.mass + " Gender: " + photo.gender,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
           );
@@ -170,21 +188,5 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
         },
       );
     }
-  }
-}
-
-class Photo {
-  final String name;
-  String url;
-
-
-  Photo(this.name, this.url);
-
-  factory Photo.fromJson(Map<String, dynamic> json) {
-    return Photo(json["name"], json["url"].replaceAll("https://swapi.dev/api/people/", "&").replaceAll("/",".jpg").replaceAll("&", "https://starwars-visualguide.com/assets/img/characters/") );
-  }
-
-  static List<Photo> parseList(List<dynamic> list) {
-    return list.map((i) => Photo.fromJson(i)).toList();
   }
 }
