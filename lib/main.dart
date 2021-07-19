@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 void main() => runApp(MyApp());
 
@@ -50,7 +51,7 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Photos App")),
+      appBar: AppBar(title: Text("Star Wars App")),
       body: getBody(),
     );
   }
@@ -120,10 +121,13 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
                 Image.network(
                   // "https://cdn.discordapp.com/attachments/513061527092461570/865428649220767784/pnhx3ba61jt41.jpg",
                   photo.url,
-                  // fit: BoxFit.fitWidth,
-                  // width: double.infinity,
+                  fit: BoxFit.fitWidth,
+                  width: 300//double.infinity,
                   // height: 160,
                 ),
+                //   CircleAvatar(
+                //     backgroundImage: NetworkImage(photo.url),
+                //   ),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
@@ -145,9 +149,11 @@ class _PhotosListScreenState extends State<PhotosListScreen> {
 
   Future<void> fetchPhotos() async {
     try {
-      final response = await http.get(Uri.parse(
-          "https://swapi.dev/api/people/?page=$_pageNumber"));
-      List<Photo> fetchedPhotos = Photo.parseList(json.decode(response.body));
+      var dio = Dio();
+      final response = await dio.get(
+          "https://swapi.dev/api/people/?page=$_pageNumber&format=json");
+      //List<Photo> fetchedPhotos = Photo.parseList(json.decode(response.body));
+      List<Photo> fetchedPhotos = List<Photo>.from(response.data['results'].map((x) => Photo.fromJson(x)));
       setState(
         () {
           _hasMore = fetchedPhotos.length == _defaultPhotosPerPageCount;
@@ -175,7 +181,7 @@ class Photo {
   Photo(this.name, this.url);
 
   factory Photo.fromJson(Map<String, dynamic> json) {
-    return Photo(json["name"], json["url"].replaceAll("https://swapi.dev/api/people/", "A").replaceAll("/",".jpg").replaceAll("A", "https://starwars-visualguide.com/assets/img/characters/") );
+    return Photo(json["name"], json["url"].replaceAll("https://swapi.dev/api/people/", "&").replaceAll("/",".jpg").replaceAll("&", "https://starwars-visualguide.com/assets/img/characters/") );
   }
 
   static List<Photo> parseList(List<dynamic> list) {
